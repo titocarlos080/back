@@ -1,0 +1,53 @@
+type Usuario {
+    user: ID!
+    password: String
+    nombre: String
+    apellidos: String
+    sexo: String
+    fnac: String
+    telefono: String
+    correo: String
+    rol: String
+    fotoPath: String
+    especialidad: String
+    token: String
+ }
+
+type Query {
+    getAllUsuarios: [Usuario]
+    getUsuarioById(user: ID!): Usuario
+}
+
+type Mutation {
+    createUsuario(
+        user: ID!, 
+        password: String!, 
+        nombre: String, 
+        apellidos: String, 
+        sexo: String, 
+        fnac: String, 
+        telefono: String, 
+        correo: String, 
+        rol: String, 
+        fotoPath: String, 
+        especialidad: String, 
+        token: String
+    ): Usuario
+
+    updateUsuario(
+        user: ID!, 
+        password: String, 
+        nombre: String, 
+        apellidos: String, 
+        sexo: String, 
+        fnac: String, 
+        telefono: String, 
+        correo: String, 
+        rol: String, 
+        fotoPath: String, 
+        especialidad: String, 
+        token: String
+    ): Usuario
+
+    deleteUsuario(user: ID!): Boolean
+}

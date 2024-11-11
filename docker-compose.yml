@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: hospital
+      MONGO_INITDB_ROOT_USERNAME: usersoft2
+      MONGO_INITDB_ROOT_PASSWORD: 123
+
+  back:
+    build: .
+    container_name: spring-boot-app
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.data.mongodb.uri=mongodb://usersoft2:123@mongo:27017/hospital
+      - spring.data.mongodb.database=hospital
+      - spring.security.user.name=admin
+      - spring.security.user.password=admin
+    depends_on:
+      - mongo

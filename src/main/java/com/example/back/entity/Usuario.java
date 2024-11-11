@@ -25,6 +25,7 @@ public class Usuario {
     private String rol;
     private String fotoPath;
     private String especialidad;
+    private String token;
 
     @DBRef
     private List<Test> tests;
