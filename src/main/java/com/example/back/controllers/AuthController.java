@@ -56,7 +56,7 @@ public class AuthController {
         newUsuario.setFnac(authRequest.getFnac());
         newUsuario.setTelefono(authRequest.getTelefono());
         newUsuario.setCorreo(authRequest.getCorreo());
-        newUsuario.setRol(authRequest.getRol());
+        newUsuario.setRolId(authRequest.getRolId());
         newUsuario.setFotoPath(authRequest.getFotoPath());
         newUsuario.setEspecialidad(authRequest.getEspecialidad());
         newUsuario.setToken(authRequest.getToken());

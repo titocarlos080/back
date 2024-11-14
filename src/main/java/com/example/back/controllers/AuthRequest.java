@@ -9,7 +9,7 @@ public class AuthRequest {
     private String fnac;
     private String telefono;
     private String correo;
-    private String rol;
+    private String RolId;
     private String fotoPath;
     private String especialidad;
     private String token;
@@ -79,12 +79,12 @@ public class AuthRequest {
         this.correo = correo;
     }
 
-    public String getRol() {
-        return rol;
+    public String getRolId() {
+        return RolId;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRol(String RolId) {
+        this.RolId = RolId;
     }
 
     public String getFotoPath() {

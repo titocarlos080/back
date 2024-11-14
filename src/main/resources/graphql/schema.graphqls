@@ -1,5 +1,6 @@
 type Usuario {
-    user: ID!
+    id: ID!
+    user: String
     password: String
     nombre: String
     apellidos: String
@@ -7,20 +8,53 @@ type Usuario {
     fnac: String
     telefono: String
     correo: String
-    rol: String
+    rolId: String
     fotoPath: String
     especialidad: String
-    token: String
  }
 
-type Query {
-    getAllUsuarios: [Usuario]
-    getUsuarioById(user: ID!): Usuario
+type Categoria {
+    id: ID!
+    nombre: String!
 }
 
+type Test {
+    id: ID!
+    nombre: String!
+    fecha: String
+    estado: String
+    observaciones: String
+    calificacion: Int
+    usuarioId: String
+    categoriaId: String
+}
+type Rol {
+  id: String!
+  nombre: String!
+}
+
+
+# Single Query Type
+type Query {
+    getAllUsuarios: [Usuario]
+    getUsuarioById(id: ID!): Usuario
+
+    getAllCategorias: [Categoria]
+    getCategoriaById(id: ID!): Categoria
+
+    getAllTests: [Test]
+    getTestById(id: ID!): Test
+
+    getAllRoles: [Rol!]!          
+    getRolById(id: String!): Rol!   
+}
+
+
+
+# Single Mutation Type
 type Mutation {
     createUsuario(
-        user: ID!, 
+        user: String!, 
         password: String!, 
         nombre: String, 
         apellidos: String, 
@@ -31,11 +65,11 @@ type Mutation {
         rol: String, 
         fotoPath: String, 
         especialidad: String, 
-        token: String
-    ): Usuario
+     ): Usuario
 
     updateUsuario(
-        user: ID!, 
+        id: ID!,
+        user: String, 
         password: String, 
         nombre: String, 
         apellidos: String, 
@@ -46,8 +80,37 @@ type Mutation {
         rol: String, 
         fotoPath: String, 
         especialidad: String, 
-        token: String
-    ): Usuario
+     ): Usuario
 
-    deleteUsuario(user: ID!): Boolean
+    deleteUsuario(id: ID!): Boolean
+
+    createCategoria(nombre: String!): Categoria
+    updateCategoria(id: ID!, nombre: String!): Categoria
+    deleteCategoria(id: ID!): String
+
+    createTest(
+        nombre: String!,
+        fecha: String,
+        estado: String,
+        observaciones: String,
+        calificacion: Int,
+        usuarioId: String!,
+        categoriaId: String!
+    ): Test
+
+    updateTest(
+        id: ID!,
+        nombre: String,
+        fecha: String,
+        estado: String,
+        observaciones: String,
+        calificacion: Int,
+        usuarioId: String!,
+        categoriaId: String!
+    ): Test
+    deleteTest(id: ID!): String
+
+  createRol(nombre: String!): Rol!         # Crea un nuevo rol
+  updateRol(id: String!, nombre: String!): Rol!  # Actualiza un rol existente
+  deleteRol(id: String!): String!          # Elimina un rol
 }

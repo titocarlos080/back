@@ -54,7 +54,7 @@ public class ResultadoController {
                     resultado.setInterpretacion(resultadoDetails.getInterpretacion());
                     resultado.setDetalles(resultadoDetails.getDetalles());
                     resultado.setUrlImagenPath(resultadoDetails.getUrlImagenPath());
-                    resultado.setTest(resultadoDetails.getTest());
+                    resultado.setTestId(resultadoDetails.getTestId());
                     Resultado updatedResultado = resultadoRepository.save(resultado);
                     return new ResponseEntity<>(updatedResultado, HttpStatus.OK);
                 })

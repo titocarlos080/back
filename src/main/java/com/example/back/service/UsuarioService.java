@@ -21,8 +21,8 @@ public class UsuarioService {
     }
 
     // Obtener un usuario por ID (user en este caso)
-    public Optional<Usuario> findUsuarioById(String user) {
-        return usuarioRepository.findById(user);
+    public Optional<Usuario> findUsuarioById(String id) {
+        return usuarioRepository.findById(id);
     }
 
     // Crear un nuevo usuario
@@ -31,29 +31,14 @@ public class UsuarioService {
     }
 
     // Actualizar un usuario existente
-    public Optional<Usuario> updateUsuario(String user, Usuario usuarioDetails) {
-        return usuarioRepository.findById(user)
-            .map(usuario -> {
-                usuario.setPassword(usuarioDetails.getPassword()); // Recuerda encriptar la contraseña si es necesario
-                usuario.setNombre(usuarioDetails.getNombre());
-                usuario.setApellidos(usuarioDetails.getApellidos());
-                usuario.setSexo(usuarioDetails.getSexo());
-                usuario.setFnac(usuarioDetails.getFnac());
-                usuario.setTelefono(usuarioDetails.getTelefono());
-                usuario.setCorreo(usuarioDetails.getCorreo());
-                usuario.setRol(usuarioDetails.getRol());
-                usuario.setFotoPath(usuarioDetails.getFotoPath());
-                usuario.setEspecialidad(usuarioDetails.getEspecialidad());
-                usuario.setToken(usuarioDetails.getToken());
-                usuario.setTests(usuarioDetails.getTests());
-                return usuarioRepository.save(usuario);
-            });
+    public Usuario updateUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario); // Save updates to the existing user
     }
 
     // Eliminar un usuario
-    public boolean deleteUsuario(String user) {
-        if (usuarioRepository.existsById(user)) {
-            usuarioRepository.deleteById(user);
+    public boolean deleteUsuario(String id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
             return true;
         }
         return false;

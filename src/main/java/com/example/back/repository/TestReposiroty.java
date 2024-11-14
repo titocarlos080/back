@@ -1,12 +1,11 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
 package com.example.back.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.back.entity.Test;
-/**
- *
- * @author machaca
- */
-public interface TestReposiroty extends MongoRepository<Test, String>  {
+public class TestReposiroty {
 
 }

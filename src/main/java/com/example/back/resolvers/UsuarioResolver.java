@@ -4,122 +4,132 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 
 import com.example.back.entity.Usuario;
 import com.example.back.service.UsuarioService;
 
-
-@Component
-public class UsuarioResolver{
+@Controller
+public class UsuarioResolver {
+    @Autowired
+     private UsuarioService usuarioService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    // Resolver para obtener todos los usuarios (Este es un query, no un mutation)
+    // Resolver for getting all users
     @QueryMapping
     public List<Usuario> getAllUsuarios() {
-        return usuarioService.findAllUsuarios();
+        List<Usuario> usuarios = usuarioService.findAllUsuarios();
+        return usuarios;
     }
 
-    // Resolver para obtener un usuario por ID (Este es un query, no un mutation)
+    // Resolver for getting a user by ID
     @QueryMapping
-    public Usuario getUsuarioById(String user) {
-        Optional<Usuario> usuarioOpt = usuarioService.findUsuarioById(user);
-        return usuarioOpt.orElse(null); // Retorna null si no se encuentra el usuario
+    public Usuario getUsuarioById(@Argument String id) {
+        return usuarioService.findUsuarioById(id).orElse(null);
     }
 
-    // Resolver para crear un usuario (Este es un mutation)
-    @QueryMapping
+    // Resolver for creating a new user
+    @MutationMapping
     public Usuario createUsuario(
-            String user, 
-            String password, 
-            String nombre, 
-            String apellidos, 
-            String sexo, 
-            String fnac, 
-            String telefono, 
-            String correo, 
-            String rol, 
-            String fotoPath, 
-            String especialidad, 
-            String token) {
-        
-        // Validación básica de entrada, podrías agregar más según sea necesario
-        if (user == null || password == null || nombre == null || correo == null) {
-            throw new IllegalArgumentException("Los campos 'user', 'password', 'nombre' y 'correo' son obligatorios");
-        }
-        
-        // Creación del objeto Usuario
+            @Argument String user,
+            @Argument String password,
+            @Argument String nombre,
+            @Argument String apellidos,
+            @Argument String sexo,
+            @Argument String fnac,
+            @Argument String telefono,
+            @Argument String correo,
+            @Argument String rolId,
+            @Argument String fotoPath,
+            @Argument String especialidad
+            ) {
+        // Crear un nuevo objeto Usuario con los datos de los argumentos
         Usuario usuario = new Usuario();
         usuario.setUser(user);
-        usuario.setPassword(password); // Asegúrate de encriptar la contraseña
+        usuario.setPassword(passwordEncoder.encode(password));
         usuario.setNombre(nombre);
         usuario.setApellidos(apellidos);
         usuario.setSexo(sexo);
         usuario.setFnac(fnac);
         usuario.setTelefono(telefono);
         usuario.setCorreo(correo);
-        usuario.setRol(rol);
+        usuario.setRolId(rolId);
         usuario.setFotoPath(fotoPath);
         usuario.setEspecialidad(especialidad);
-        usuario.setToken(token);
-        
-        // Llamada al servicio para guardar el usuario
+        usuario.setToken("token");
+
+        // Llamar al servicio para guardar el nuevo usuario
         return usuarioService.createUsuario(usuario);
     }
 
-    // Resolver para actualizar un usuario (Este es un mutation)
-    @QueryMapping
-     public Usuario updateUsuario(
-            String user, 
-            String password, 
-            String nombre, 
-            String apellidos, 
-            String sexo, 
-            String fnac, 
-            String telefono, 
-            String correo, 
-            String rol, 
-            String fotoPath, 
-            String especialidad, 
-            String token) {
-        
-        // Buscar el usuario existente
-        Optional<Usuario> usuarioOpt = usuarioService.findUsuarioById(user);
+    // Resolver for updating a user
+    @MutationMapping
+    public Usuario updateUsuario(
+            @Argument String id,
+            @Argument String user,
+            @Argument String password,
+            @Argument String nombre,
+            @Argument String apellidos,
+            @Argument String sexo,
+            @Argument String fnac,
+            @Argument String telefono,
+            @Argument String correo,
+            @Argument String rolId,
+            @Argument String fotoPath,
+            @Argument String especialidad) {
+
+        Optional<Usuario> usuarioOpt = usuarioService.findUsuarioById(id);
+
         if (!usuarioOpt.isPresent()) {
-            throw new IllegalArgumentException("Usuario con ID " + user + " no encontrado");
+            throw new IllegalArgumentException("User with ID " + id + " not found.");
         }
 
-        // Obtener los detalles actuales y actualizarlos
-        Usuario usuarioDetails = usuarioOpt.get();
-        usuarioDetails.setPassword(password);
-        usuarioDetails.setNombre(nombre);
-        usuarioDetails.setApellidos(apellidos);
-        usuarioDetails.setSexo(sexo);
-        usuarioDetails.setFnac(fnac);
-        usuarioDetails.setTelefono(telefono);
-        usuarioDetails.setCorreo(correo);
-        usuarioDetails.setRol(rol);
-        usuarioDetails.setFotoPath(fotoPath);
-        usuarioDetails.setEspecialidad(especialidad);
-        usuarioDetails.setToken(token);
+        // Get the existing user
+        Usuario usuario = usuarioOpt.get();
 
-        // Llamada al servicio para actualizar el usuario
-        return usuarioService.updateUsuario(user, usuarioDetails).orElse(null);
+        // Update fields if new values are provided (non-null)
+        if (password != null)
+            usuario.setPassword(password);
+        if (nombre != null)
+            usuario.setNombre(nombre);
+        if (apellidos != null)
+            usuario.setApellidos(apellidos);
+        if (sexo != null)
+            usuario.setSexo(sexo);
+        if (fnac != null)
+            usuario.setFnac(fnac);
+        if (telefono != null)
+            usuario.setTelefono(telefono);
+        if (correo != null)
+            usuario.setCorreo(correo);
+        if (rolId != null)
+            usuario.setRolId(rolId);
+        if (fotoPath != null)
+            usuario.setFotoPath(fotoPath);
+        if (especialidad != null)
+            usuario.setEspecialidad(especialidad);
+        if (usuario.getToken() != null)
+            usuario.setToken("token");
+
+        // Save the updated user
+        return usuarioService.updateUsuario(usuario);
     }
 
-    // Resolver para eliminar un usuario (Este es un mutation)
-    @QueryMapping
-     public Boolean deleteUsuario(String user) {
-        // Verifica si el usuario existe antes de intentar eliminarlo
-        Optional<Usuario> usuarioOpt = usuarioService.findUsuarioById(user);
+    // Resolver for deleting a user
+    @MutationMapping
+    public Boolean deleteUsuario(@Argument String id) {
+        Optional<Usuario> usuarioOpt = usuarioService.findUsuarioById(id);
         if (!usuarioOpt.isPresent()) {
-            throw new IllegalArgumentException("Usuario con ID " + user + " no encontrado");
+            throw new IllegalArgumentException("User with ID " + id + " not found.");
         }
 
-        // Llamada al servicio para eliminar el usuario
-        return usuarioService.deleteUsuario(user);
+        return usuarioService.deleteUsuario(id);
     }
+
 }

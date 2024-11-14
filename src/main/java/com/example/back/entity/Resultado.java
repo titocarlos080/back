@@ -23,9 +23,9 @@ public class Resultado {
     private String interpretacion;
     private String detalles;
     private String urlImagenPath;
+    private String TestId;
 
-    @DBRef
-    private Test test;
+   
 
     // Getters and Setters
 }

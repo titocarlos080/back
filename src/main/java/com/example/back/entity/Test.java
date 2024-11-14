@@ -1,9 +1,7 @@
 package com.example.back.entity;
 
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.persistence.Id;
@@ -17,23 +15,12 @@ public class Test {
     @Id
     private String id;  // MongoDB default ID type
     private String nombre;
-    private Date fecha;
-    private Date fechaEntrega;
-    private String estado;
+    private String fecha;
+     private String estado;
     private String observaciones;
-    private Double calificacion;
+    private Integer calificacion;
+    private String usuarioId;
+    private String categoriaId;
 
-    @DBRef
-    private Usuario usuario;
-
-    @DBRef
-    private Categoria categoria;
-
-    @DBRef
-    private Resultado resultado;
-
-    @DBRef
-    private List<Pago> pagos;
-
-    // Getters and Setters
+     // Getters and Setters
 }

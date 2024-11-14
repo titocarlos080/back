@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.back.entity.Test;
-import com.example.back.repository.TestReposiroty;
+import com.example.back.repository.TestRepository;
  
 @RestController
 @RequestMapping("/tests")
 public class TestController {
 
     @Autowired
-    private TestReposiroty testRepository;
+    private TestRepository testRepository;
 
     @GetMapping("/all")
     public ResponseEntity<List<Test>> getAllTests() {
@@ -50,15 +50,12 @@ public class TestController {
                 .map(test -> {
                     test.setNombre(testDetails.getNombre());
                     test.setFecha(testDetails.getFecha());
-                    test.setFechaEntrega(testDetails.getFechaEntrega());
-                    test.setEstado(testDetails.getEstado());
+                     test.setEstado(testDetails.getEstado());
                     test.setObservaciones(testDetails.getObservaciones());
                     test.setCalificacion(testDetails.getCalificacion());
-                    test.setUsuario(testDetails.getUsuario());
-                    test.setCategoria(testDetails.getCategoria());
-                    test.setResultado(testDetails.getResultado());
-                    test.setPagos(testDetails.getPagos());
-                    Test updatedTest = testRepository.save(test);
+                    test.setUsuarioId(testDetails.getUsuarioId());
+                    test.setCategoriaId(testDetails.getCategoriaId());
+                     Test updatedTest = testRepository.save(test);
                     return new ResponseEntity<>(updatedTest, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

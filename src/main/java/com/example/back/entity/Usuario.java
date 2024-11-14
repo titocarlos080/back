@@ -14,6 +14,7 @@ import lombok.Setter;
 @Document(collection = "usuario")
 public class Usuario {
     @Id
+    private String id;  // MongoDB's `_id`
     private String user;  // MongoDB uses `String` as the default `_id` type
     private String password;
     private String nombre;
@@ -22,13 +23,12 @@ public class Usuario {
     private String fnac;
     private String telefono;
     private String correo;
-    private String rol;
+    private String rolId;
     private String fotoPath;
     private String especialidad;
     private String token;
 
-    @DBRef
-    private List<Test> tests;
+    
 
    
 }
